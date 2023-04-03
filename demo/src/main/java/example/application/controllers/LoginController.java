@@ -1,9 +1,6 @@
 package example.application.controllers;
 
-import example.data.DBConnection;
-import example.data.StaticDatabaseConnection;
-import example.data.StaticUserDAO;
-import example.data.User;
+import example.data.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,10 +31,14 @@ public class LoginController {
     @GetMapping("/login")
     public String showLoginForm(Model model) {
         // The user attribute is initialized to an empty user.
-        model.addAttribute("user", new User("","",""));
-        // When the user first visits the login page, they are not registering.
-        model.addAttribute("isRegistering", false);
-        return "login-view";
+        try {
+            model.addAttribute("user", new User("","",""));
+            // When the user first visits the login page, they are not registering.
+            model.addAttribute("isRegistering", false);
+            return "login-view";
+        } catch (InvalidUserException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
