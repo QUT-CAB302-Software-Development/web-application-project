@@ -29,5 +29,5 @@ jobs:
       if: always()
       with:
         name: TestReport
-        path: ./client/target/surefire-reports
+        path: ./demo/target/surefire-reports
         retention-days: 30
