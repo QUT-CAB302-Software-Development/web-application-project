@@ -15,10 +15,10 @@ public class User {
      * @param password The password of the user.
      * @param email    The email of the user.
      */
-    public User(String name, String password, String email) {
+    public User(String name, String password, String email) throws InvalidUserException {
         this.name = name;
-        this.password = password;
-        this.email = email;
+        setPassword(password);
+        setEmail(email);
     }
 
     /**
@@ -57,21 +57,27 @@ public class User {
         this.name = newName;
     }
 
-    /**
-     * Sets the password of the user.
-     *
-     * @param newPassword The new password of the user.
-     */
-    public void setPassword(String newPassword) {
-        this.password = newPassword;
+    public void setPassword(String password) throws InvalidUserException {
+        if (password.length() < 5) {
+            throw new InvalidUserException("Password must be at least 5 characters long.");
+        }
+        if (!password.matches(".*[0-9].*")) {
+            throw new InvalidUserException("Password must contain at least one number.");
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            throw new InvalidUserException("Password must contain at least one uppercase letter.");
+        }
+        if (!password.matches(".*[a-z].*")) {
+            throw new InvalidUserException("Password must contain at least one lowercase letter.");
+        }
+        this.password = password;
     }
 
-    /**
-     * Sets the email of the user.
-     *
-     * @param newEmail The new email of the user.
-     */
-    public void setEmail(String newEmail) {
-        this.email = newEmail;
+    public void setEmail(String email) throws InvalidUserException {
+        String[] parts = email.split("@");
+        if (parts.length != 2) {
+            throw new InvalidUserException("Email must contain only one @ symbol.");
+        }
+        this.email = email;
     }
 }
